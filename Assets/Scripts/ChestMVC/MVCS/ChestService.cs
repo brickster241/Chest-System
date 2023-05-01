@@ -18,15 +18,15 @@ namespace Services.Chest {
             chestPool = new ChestPool(4, ChestPrefab, ChestsParentTF);
         }
 
-        public GameObject FetchChestFromPool() {
+        public (GameObject, ChestScriptableObject) FetchChestFromPool() {
             ChestView chestObject = chestPool.GetChestItem();
             if (chestObject != null) {
                 ChestScriptableObject chestConfig = FetchRandomChestConfiguration();
                 chestObject.GetChestController().GetChestModel().SetChestConfiguration(chestConfig);
                 chestObject.GetChestController().SetViewAttributes();
-                return chestObject.gameObject;
+                return (chestObject.gameObject, chestConfig);
             }
-            return null;
+            return (null, null);
         }
 
         public ChestScriptableObject FetchRandomChestConfiguration() {
