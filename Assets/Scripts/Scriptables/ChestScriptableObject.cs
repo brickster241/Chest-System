@@ -1,0 +1,21 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Scriptables {
+    [CreateAssetMenu(fileName = "ChestScriptableObject", menuName = "Scriptable-Objects/ChestScriptableObject")]
+    public class ChestScriptableObject : ScriptableObject {
+        public Vector2Int CHEST_COINS_RANGE;
+        public Vector2Int CHEST_GEMS_RANGE;
+        public int UNLOCK_TIME;
+        public Sprite CHEST_SPRITE;
+        public ChestType CHEST_TYPE;
+    }
+
+    public enum ChestType {
+        COMMON,
+        MINI,
+        RARE,
+        LEGENDARY
+    }
+}
