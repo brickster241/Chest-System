@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CHEST_COINS_RANGE: {x: 200, y: 500}
   CHEST_GEMS_RANGE: {x: 50, y: 100}
-  UNLOCK_TIME: 40
-  MAX_GEMS_TO_UNLOCK: 0
+  MAX_UNLOCK_TIME: 120
+  MAX_GEMS_TO_UNLOCK: 40
   CHEST_SPRITE: {fileID: 21300000, guid: ae228cf262cf8294a9f803a389d801a7, type: 3}
   CHEST_TYPE: 2

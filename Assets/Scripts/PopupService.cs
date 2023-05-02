@@ -7,13 +7,16 @@ using TMPro;
 using Services.Events;
 using Generics;
 using Services.Chest;
+using Services.UI;
 
 public class PopupService : GenericMonoSingleton<PopupService>
 {
     [SerializeField] GameObject PopupUI;
     [SerializeField] Button OkButton;
     [SerializeField] Button UnlockButton;
+    [SerializeField] Button QueueButton;
     [SerializeField] Button CancelButton;
+    [SerializeField] TextMeshProUGUI unlockButtonText;
     [SerializeField] TextMeshProUGUI detailText;
     [SerializeField] TextMeshProUGUI chestText;
     [SerializeField] TextMeshProUGUI chestTitleText;
@@ -22,15 +25,36 @@ public class PopupService : GenericMonoSingleton<PopupService>
         EventService.Instance.onSlotFull += OnSlotsFull;
         EventService.Instance.onChestSpawned += OnChestSpawnedSuccesful;
         EventService.Instance.onChestClicked += OnChestButtonClicked;
+        EventService.Instance.onNotEnoughCoins += DisplayNotEnoughResources;
     }
 
-    public void OnUnlockButtonClick(GameObject ChestGameObject) {
-        ChestService.Instance.StartUnlockingChest(ChestGameObject);
+    public void OnQueueButtonClick(GameObject ChestGameObject) {
         ClearPopUp();
+        if (ChestQueueService.Instance.isChestQueueingPosssible()) {
+            ChestQueueService.Instance.AddInQueue(ChestGameObject);
+        } else {
+            PopupUI.SetActive(true);
+            detailText.text = "QUEUE IS FULL. TRY AGAIN LATER.";
+            OkButton.gameObject.SetActive(true);
+            detailText.gameObject.SetActive(true);
+        }
+    }
+
+    public void OnUnlockButtonClick(GameObject ChestGameObject, int GEMS_TO_UNLOCK) {
+        if (UIService.Instance.GEM_COUNT >= GEMS_TO_UNLOCK) {
+            ChestService.Instance.UnlockChest(ChestGameObject);
+            EventService.Instance.InvokeCollectCoinGemEvent(0, -GEMS_TO_UNLOCK);
+            ClearPopUp();
+        } else {
+            ClearPopUp();
+            DisplayNotEnoughResources();
+        }
     }
 
     public void ClearPopUp() {
         PopupUI.SetActive(false);
+        QueueButton.onClick.RemoveAllListeners();
+        QueueButton.gameObject.SetActive(false);
         UnlockButton.onClick.RemoveAllListeners();
         UnlockButton.gameObject.SetActive(false);
         CancelButton.gameObject.SetActive(false);
@@ -46,28 +70,41 @@ public class PopupService : GenericMonoSingleton<PopupService>
         detailText.gameObject.SetActive(true);
     }
 
-    public void OnChestButtonClicked(int COINS, int GEMS, int GEMS_TO_UNLOCK, ChestState CHEST_STATE, ChestType chestType, GameObject gameObject) {
+    public void DisplayNotEnoughResources() {
+        PopupUI.SetActive(true);
+        OkButton.gameObject.SetActive(true);
+        detailText.text = "NOT ENOUGH COINS / GEMS. TRY AGAIN LATER.";
+        detailText.gameObject.SetActive(true);
+    }
+
+    public void OnChestButtonClicked(int COINS, int GEMS, int GEMS_TO_UNLOCK, ChestState CHEST_STATE, ChestType chestType, GameObject chestObject) {
         Debug.Log("CURRENT CHEST STATE : " + CHEST_STATE);
         if (CHEST_STATE == ChestState.LOCKED) {
-            ChestLockedStatePopUp(gameObject);
+            ChestLockedStatePopUp(chestObject);
         } else if (CHEST_STATE == ChestState.UNLOCKING) {
-            ChestUnlockingStatePopUp();
+            ChestUnlockingStatePopUp(GEMS_TO_UNLOCK, chestObject);
         } else if (CHEST_STATE == ChestState.OPEN) {
             ChestOpenStatePopUp(COINS, GEMS, chestType);
         }
     }
 
-    private void ChestLockedStatePopUp(GameObject gameObject) {
+    private void ChestLockedStatePopUp(GameObject chestObject) {
         PopupUI.SetActive(true);
-        detailText.text = "CHEST IS LOCKED. START UNLOCKING ?";
+        detailText.text = "CHEST IS LOCKED. QUEUE UNLOCKING ?";
         detailText.gameObject.SetActive(true);
-        UnlockButton.onClick.AddListener(() => { OnUnlockButtonClick(gameObject);});
-        UnlockButton.gameObject.SetActive(true);
+        QueueButton.onClick.AddListener(() => { OnQueueButtonClick(chestObject);});
+        QueueButton.gameObject.SetActive(true);
         CancelButton.gameObject.SetActive(true);
     }
 
-    private void ChestUnlockingStatePopUp() {
-
+    private void ChestUnlockingStatePopUp(int GEMS_TO_UNLOCK, GameObject chestObject) {
+        PopupUI.SetActive(true);
+        detailText.text = "UNLOCK CHEST FOR " + GEMS_TO_UNLOCK + " GEMS ?";
+        detailText.gameObject.SetActive(true);
+        unlockButtonText.text = GEMS_TO_UNLOCK.ToString();
+        UnlockButton.onClick.AddListener(() => { OnUnlockButtonClick(chestObject, GEMS_TO_UNLOCK);});
+        UnlockButton.gameObject.SetActive(true);
+        CancelButton.gameObject.SetActive(true);
     }
 
     private void ChestOpenStatePopUp(int COINS, int GEMS, ChestType chestType) {
@@ -77,6 +114,7 @@ public class PopupService : GenericMonoSingleton<PopupService>
         PopupUI.SetActive(true);
         chestText.gameObject.SetActive(true);
         OkButton.gameObject.SetActive(true);
+        EventService.Instance.InvokeCollectCoinGemEvent(COINS, GEMS);
     }
 
     private string GetChestTypeText(ChestType chestType) {
@@ -107,5 +145,7 @@ public class PopupService : GenericMonoSingleton<PopupService>
         EventService.Instance.onSlotFull -= OnSlotsFull;
         EventService.Instance.onChestSpawned -= OnChestSpawnedSuccesful;
         EventService.Instance.onChestClicked -= OnChestButtonClicked;
+        EventService.Instance.onNotEnoughCoins -= DisplayNotEnoughResources;
+    
     }
 }

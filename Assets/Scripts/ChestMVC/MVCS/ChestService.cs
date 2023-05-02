@@ -45,7 +45,7 @@ namespace Services.Chest {
             ChestSM chestSM = chestController.GetChestSM();
             int COINS = chestController.GetChestModel().CHEST_COINS;
             int GEMS = chestController.GetChestModel().CHEST_GEMS;
-            int GEMS_TO_UNLOCK = chestController.GetChestModel().GEMS_TO_UNLOCK;
+            int GEMS_TO_UNLOCK = (int)chestController.GetChestModel().GEMS_TO_UNLOCK;
             ChestState CHEST_STATE = chestSM.currentChestStateEnum;
             ChestType chestType = chestController.GetChestModel().CHEST_TYPE;
             if (CHEST_STATE == ChestState.OPEN) {
@@ -55,9 +55,13 @@ namespace Services.Chest {
             EventService.Instance.InvokeChestClickedEvent(COINS, GEMS, GEMS_TO_UNLOCK, CHEST_STATE, chestType, chestController.GetChestView().gameObject);
         }
 
-        public void StartUnlockingChest(GameObject ChestGameObject) {
+        public void UnlockChest(GameObject ChestGameObject) {
             ChestController chestController = ChestGameObject.GetComponent<ChestView>().GetChestController();
-            chestController.GetChestSM().SwitchState(ChestState.UNLOCKING);
+            chestController.GetChestModel().UpdateUnlockTime(chestController.GetChestModel().UNLOCK_TIME);
+        }
+
+        public void DequeueChestFromWaitingQueue() {
+            ChestQueueService.Instance.DequeueChest();
         }
     }
 }
