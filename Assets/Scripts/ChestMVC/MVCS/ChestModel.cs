@@ -9,7 +9,7 @@ namespace MVC.Chest {
         private ChestController chestController;
         public int CHEST_COINS {get; private set;}
         public int CHEST_GEMS {get; private set;}
-        public int UNLOCK_TIME {get; private set;}
+        public float UNLOCK_TIME {get; private set;}
         public int GEMS_TO_UNLOCK {get; private set;}
         public Sprite CHEST_SPRITE {get; private set;}
         public ChestType CHEST_TYPE {get; private set;}
@@ -30,6 +30,10 @@ namespace MVC.Chest {
 
         public void SetChestController(ChestController _chestController) {
             chestController = _chestController;
+        }
+
+        public void UpdateUnlockTime(float deltaTime) {
+            UNLOCK_TIME = Mathf.Max(UNLOCK_TIME - deltaTime, 0);
         }
 
     }

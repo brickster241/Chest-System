@@ -10,6 +10,7 @@ namespace MVC.Chest {
         private ChestController chestController;
         public Image ChestSprite;
         public TextMeshProUGUI Chest_Type;
+        public TextMeshProUGUI Timer_Text;
 
         public ChestController GetChestController() {
             return chestController;
@@ -17,6 +18,10 @@ namespace MVC.Chest {
 
         public void SetChestController(ChestController _chestController) {
             chestController = _chestController;
+        }
+
+        public void OnChestClicked() {
+            chestController.OnChestButtonClicked();
         }
         
     }

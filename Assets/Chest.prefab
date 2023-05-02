@@ -187,6 +187,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ChestSprite: {fileID: 6558991185057646088}
   Chest_Type: {fileID: 6558991184285977465}
+  Timer_Text: {fileID: 6558991185649679086}
 --- !u!1 &6558991185057646101
 GameObject:
   m_ObjectHideFlags: 0
@@ -309,7 +310,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6558991185057646088}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 9161304506256380000}
+        m_TargetAssemblyTypeName: MVC.Chest.ChestView, Assembly-CSharp
+        m_MethodName: OnChestClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6558991185649679084
 GameObject:
   m_ObjectHideFlags: 0

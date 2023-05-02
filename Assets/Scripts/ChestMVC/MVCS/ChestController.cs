@@ -2,16 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Scriptables;
+using Services.Chest;
 
 namespace MVC.Chest {
     public class ChestController
     {
         private ChestModel chestModel;
         private ChestView chestView;
+        private ChestSM chestSM;
 
         public ChestController(ChestModel _chestModel, ChestView _chestView) {
             chestModel = _chestModel;
             chestView = _chestView;
+            chestSM = new ChestSM(this);
         }
 
         public ChestModel GetChestModel() {
@@ -20,6 +23,14 @@ namespace MVC.Chest {
 
         public ChestView GetChestView() {
             return chestView;
+        }
+
+        public ChestSM GetChestSM() {
+            return chestSM;
+        }
+
+        public void OnChestButtonClicked() {
+            ChestService.Instance.TriggerPopUp(this);
         }
 
         public void SetViewAttributes() {
@@ -43,6 +54,9 @@ namespace MVC.Chest {
                 chestView.Chest_Type.text = "LEGENDARY";
             }
         }
+
+
+        
 
     }
 
