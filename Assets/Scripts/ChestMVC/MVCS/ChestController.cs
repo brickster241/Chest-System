@@ -10,7 +10,7 @@ namespace MVC.Chest {
         private ChestModel chestModel;
         private ChestView chestView;
         private ChestSM chestSM;
-
+        
         public ChestController(ChestModel _chestModel, ChestView _chestView) {
             chestModel = _chestModel;
             chestView = _chestView;
@@ -55,8 +55,9 @@ namespace MVC.Chest {
             }
         }
 
-
-        
+        public void DequeueChest() {
+            ChestService.Instance.DequeueChestFromWaitingQueue();
+        }
 
     }
 

@@ -23,6 +23,7 @@ public class ChestUnlockingState : ChestBaseState
             yield return new WaitForEndOfFrame();
         }
         chestSM.SwitchState(ChestState.OPEN);
+        chestSM.GetChestController().DequeueChest();
     }
 
     private string GetTimeText(float UNLOCK_TIME) {

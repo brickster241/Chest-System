@@ -55,9 +55,13 @@ namespace Services.Chest {
             EventService.Instance.InvokeChestClickedEvent(COINS, GEMS, GEMS_TO_UNLOCK, CHEST_STATE, chestType, chestController.GetChestView().gameObject);
         }
 
-        public void StartUnlockingChest(GameObject ChestGameObject) {
+        public void UnlockChest(GameObject ChestGameObject) {
             ChestController chestController = ChestGameObject.GetComponent<ChestView>().GetChestController();
-            chestController.GetChestSM().SwitchState(ChestState.UNLOCKING);
+            chestController.GetChestSM().SwitchState(ChestState.OPEN);
+        }
+
+        public void DequeueChestFromWaitingQueue() {
+            ChestQueueService.Instance.DequeueChest();
         }
     }
 }

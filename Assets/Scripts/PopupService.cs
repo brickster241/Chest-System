@@ -13,6 +13,7 @@ public class PopupService : GenericMonoSingleton<PopupService>
     [SerializeField] GameObject PopupUI;
     [SerializeField] Button OkButton;
     [SerializeField] Button UnlockButton;
+    [SerializeField] Button QueueButton;
     [SerializeField] Button CancelButton;
     [SerializeField] TextMeshProUGUI detailText;
     [SerializeField] TextMeshProUGUI chestText;
@@ -25,13 +26,29 @@ public class PopupService : GenericMonoSingleton<PopupService>
         EventService.Instance.onNotEnoughCoins += DisplayNotEnoughCoins;
     }
 
+    public void OnQueueButtonClick(GameObject ChestGameObject) {
+        if (ChestQueueService.Instance.isChestQueueingPosssible()) {
+            ChestQueueService.Instance.AddInQueue(ChestGameObject);
+            ClearPopUp();
+        } else {
+            ClearPopUp();
+            Debug.Log("Queueing Not Possible.");
+            PopupUI.SetActive(true);
+            detailText.text = "QUEUE IS FULL. TRY AGAIN LATER.";
+            OkButton.gameObject.SetActive(true);
+            detailText.gameObject.SetActive(true);
+        }
+    }
+
     public void OnUnlockButtonClick(GameObject ChestGameObject) {
-        ChestService.Instance.StartUnlockingChest(ChestGameObject);
+        ChestService.Instance.UnlockChest(ChestGameObject);
         ClearPopUp();
     }
 
     public void ClearPopUp() {
         PopupUI.SetActive(false);
+        QueueButton.onClick.RemoveAllListeners();
+        QueueButton.gameObject.SetActive(false);
         UnlockButton.onClick.RemoveAllListeners();
         UnlockButton.gameObject.SetActive(false);
         CancelButton.gameObject.SetActive(false);
@@ -54,10 +71,12 @@ public class PopupService : GenericMonoSingleton<PopupService>
         detailText.gameObject.SetActive(true);
     }
 
-    public void OnChestButtonClicked(int COINS, int GEMS, int GEMS_TO_UNLOCK, ChestState CHEST_STATE, ChestType chestType, GameObject gameObject) {
+    public void OnChestButtonClicked(int COINS, int GEMS, int GEMS_TO_UNLOCK, ChestState CHEST_STATE, ChestType chestType, GameObject chestObject) {
         Debug.Log("CURRENT CHEST STATE : " + CHEST_STATE);
         if (CHEST_STATE == ChestState.LOCKED) {
-            ChestLockedStatePopUp(gameObject);
+            ChestLockedStatePopUp(chestObject);
+        } else if (CHEST_STATE == ChestState.QUEUED) {
+            ChestQueuedStatePopUp();
         } else if (CHEST_STATE == ChestState.UNLOCKING) {
             ChestUnlockingStatePopUp();
         } else if (CHEST_STATE == ChestState.OPEN) {
@@ -65,12 +84,16 @@ public class PopupService : GenericMonoSingleton<PopupService>
         }
     }
 
-    private void ChestLockedStatePopUp(GameObject gameObject) {
+    private void ChestQueuedStatePopUp() {
+        
+    }
+
+    private void ChestLockedStatePopUp(GameObject chestObject) {
         PopupUI.SetActive(true);
-        detailText.text = "CHEST IS LOCKED. START UNLOCKING ?";
+        detailText.text = "CHEST IS LOCKED. QUEUE UNLOCKING ?";
         detailText.gameObject.SetActive(true);
-        UnlockButton.onClick.AddListener(() => { OnUnlockButtonClick(gameObject);});
-        UnlockButton.gameObject.SetActive(true);
+        QueueButton.onClick.AddListener(() => { OnQueueButtonClick(chestObject);});
+        QueueButton.gameObject.SetActive(true);
         CancelButton.gameObject.SetActive(true);
     }
 
