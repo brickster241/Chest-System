@@ -22,6 +22,7 @@ public class PopupService : GenericMonoSingleton<PopupService>
         EventService.Instance.onSlotFull += OnSlotsFull;
         EventService.Instance.onChestSpawned += OnChestSpawnedSuccesful;
         EventService.Instance.onChestClicked += OnChestButtonClicked;
+        EventService.Instance.onNotEnoughCoins += DisplayNotEnoughCoins;
     }
 
     public void OnUnlockButtonClick(GameObject ChestGameObject) {
@@ -43,6 +44,13 @@ public class PopupService : GenericMonoSingleton<PopupService>
         PopupUI.SetActive(true);
         OkButton.gameObject.SetActive(true);
         detailText.text = "ALL SLOTS ARE FULL. TRY AGAIN LATER.";
+        detailText.gameObject.SetActive(true);
+    }
+
+    public void DisplayNotEnoughCoins() {
+        PopupUI.SetActive(true);
+        OkButton.gameObject.SetActive(true);
+        detailText.text = "NOT ENOUGH COINS. TRY AGAIN LATER.";
         detailText.gameObject.SetActive(true);
     }
 
@@ -77,6 +85,7 @@ public class PopupService : GenericMonoSingleton<PopupService>
         PopupUI.SetActive(true);
         chestText.gameObject.SetActive(true);
         OkButton.gameObject.SetActive(true);
+        EventService.Instance.InvokeCollectCoinGemEvent(COINS, GEMS);
     }
 
     private string GetChestTypeText(ChestType chestType) {
@@ -107,5 +116,7 @@ public class PopupService : GenericMonoSingleton<PopupService>
         EventService.Instance.onSlotFull -= OnSlotsFull;
         EventService.Instance.onChestSpawned -= OnChestSpawnedSuccesful;
         EventService.Instance.onChestClicked -= OnChestButtonClicked;
+        EventService.Instance.onNotEnoughCoins -= DisplayNotEnoughCoins;
+    
     }
 }

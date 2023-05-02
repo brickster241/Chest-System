@@ -11,6 +11,8 @@ namespace Services.Events {
         public event Action onSlotFull;
         public event Action<Vector2Int, Vector2Int, ChestType> onChestSpawned;
         public event Action<int, int, int, ChestState, ChestType, GameObject> onChestClicked;
+        public event Action<int, int> onCollectCoinGem;
+        public event Action onNotEnoughCoins;
 
         public void InvokeSlotFullEvent() {
             onSlotFull?.Invoke();
@@ -22,6 +24,14 @@ namespace Services.Events {
 
         public void InvokeChestClickedEvent(int COINS, int GEMS, int GEMS_TO_UNLOCK, ChestState chestState, ChestType chestType, GameObject gameObject) {
             onChestClicked?.Invoke(COINS, GEMS, GEMS_TO_UNLOCK, chestState, chestType, gameObject);
+        }
+
+        public void InvokeCollectCoinGemEvent(int COINS, int GEMS) {
+            onCollectCoinGem?.Invoke(COINS, GEMS);
+        }
+
+        public void InvokeNotEnoughCoinsEvent() {
+            onNotEnoughCoins?.Invoke();
         }
     }
 }
