@@ -12,11 +12,16 @@ using TMPro;
 namespace Services.UI {
     public class UIService : GenericMonoSingleton<UIService>
     {
-        [SerializeField] int COIN_COUNT;
-        [SerializeField] int GEM_COUNT;
+        public int COIN_COUNT {get; private set;}
+        public int GEM_COUNT {get; private set;}
         [SerializeField] TextMeshProUGUI COIN_TEXT;
         [SerializeField] TextMeshProUGUI GEM_TEXT;
         private int EXPLORE_COST = 50;
+
+        private void Start() {
+            COIN_COUNT = 100;
+            GEM_COUNT = 50;
+        }
 
         private void OnEnable() {
             EventService.Instance.onCollectCoinGem += UpdateCoinAndGems;
