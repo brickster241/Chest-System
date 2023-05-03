@@ -22,6 +22,7 @@ namespace Services {
         }
         
         public void SpawnChest() {
+            AudioService.Instance.PlayAudio(SoundType.BUTTON_CLICK);
             if (COIN_COUNT < EXPLORE_COST) {
                 EventService.Instance.InvokeNotEnoughCoinsEvent();
                 return;

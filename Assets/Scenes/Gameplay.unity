@@ -3288,6 +3288,7 @@ GameObject:
   - component: {fileID: 1980160962}
   - component: {fileID: 1980160963}
   - component: {fileID: 1980160964}
+  - component: {fileID: 1980160965}
   m_Layer: 5
   m_Name: Chest-System-UI
   m_TagString: Untagged
@@ -3426,6 +3427,29 @@ MonoBehaviour:
   detailText: {fileID: 228645021}
   chestText: {fileID: 797903678}
   chestTitleText: {fileID: 2047229501}
+--- !u!114 &1980160965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1980160957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d05e0b6501915854d91f87aca5b828e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Sounds:
+  - soundType: 0
+    clip: {fileID: 8300000, guid: f638b6ed47f827542b2e61aeca1467e5, type: 3}
+    loop: 0
+    audioSource: {fileID: 0}
+    volume: 0.5
+  - soundType: 1
+    clip: {fileID: 8300000, guid: 73b7b4debf30cf04eb3ac97239fe1a3b, type: 3}
+    loop: 0
+    audioSource: {fileID: 0}
+    volume: 0.5
 --- !u!1 &2001771346
 GameObject:
   m_ObjectHideFlags: 0

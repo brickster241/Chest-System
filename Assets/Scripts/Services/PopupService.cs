@@ -38,6 +38,7 @@ namespace Services {
         }
 
         public void OnUnlockButtonClick(GameObject ChestGameObject, int GEMS_TO_UNLOCK) {
+            AudioService.Instance.PlayAudio(SoundType.BUTTON_CLICK);
             if (UIService.Instance.GEM_COUNT >= GEMS_TO_UNLOCK) {
                 ChestService.Instance.UnlockChest(ChestGameObject);
                 EventService.Instance.InvokeCollectCoinGemEvent(0, -GEMS_TO_UNLOCK);
@@ -49,6 +50,7 @@ namespace Services {
         }
 
         public void ClearPopUp() {
+            AudioService.Instance.PlayAudio(SoundType.BUTTON_CLICK);
             PopupUI.SetActive(false);
             QueueButton.onClick.RemoveAllListeners();
             QueueButton.gameObject.SetActive(false);
@@ -75,6 +77,7 @@ namespace Services {
         }
 
         public void OnChestButtonClicked(int COINS, int GEMS, int GEMS_TO_UNLOCK, ChestState CHEST_STATE, ChestType chestType, GameObject chestObject) {
+            AudioService.Instance.PlayAudio(SoundType.BUTTON_CLICK);
             if (CHEST_STATE == ChestState.LOCKED) {
                 ChestLockedStatePopUp(chestObject);
             } else if (CHEST_STATE == ChestState.UNLOCKING) {

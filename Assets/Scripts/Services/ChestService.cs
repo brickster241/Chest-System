@@ -46,6 +46,7 @@ namespace Services {
             ChestState CHEST_STATE = chestSM.currentChestStateEnum;
             ChestType chestType = chestController.GetChestModel().CHEST_TYPE;
             if (CHEST_STATE == ChestState.OPEN) {
+                AudioService.Instance.PlayAudio(SoundType.CHEST_OPENED);
                 ReturnChestToPool(chestController.GetChestView());
                 SlotService.Instance.ResetChestSlot(chestController.GetChestView().transform.parent);
             }
