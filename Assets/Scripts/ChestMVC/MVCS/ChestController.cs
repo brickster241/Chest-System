@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Scriptables;
-using Services.Chest;
+using Services;
+using Chest.StateMachine;
 
-namespace MVC.Chest {
+namespace Chest.MVC {
     public class ChestController
     {
         private ChestModel chestModel;

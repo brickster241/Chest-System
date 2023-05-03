@@ -1,13 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Scriptables;
 using Generics;
-using MVC.Chest;
-using ChestSlot;
-using Services.Events;
+using Chest.MVC;
+using Chest.StateMachine;
 
-namespace Services.Chest {
+namespace Services {
 
     public class ChestService : GenericMonoSingleton<ChestService>
     {

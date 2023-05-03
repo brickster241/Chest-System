@@ -1,25 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using MVC.Chest;
+using Chest.MVC;
 
-public class ChestLockedState : ChestBaseState
-{
-    public ChestLockedState(ChestSM _chestSM) : base(_chestSM) {}
-
-    public override void OnStateEnter()
+namespace Chest.StateMachine {
+    public class ChestLockedState : ChestBaseState
     {
-        base.OnStateEnter();
-        SetTimerText();
+        public ChestLockedState(ChestSM _chestSM) : base(_chestSM) {}
+
+        public override void OnStateEnter()
+        {
+            base.OnStateEnter();
+            SetTimerText();
+        }
+
+        private void SetTimerText() {
+            ChestController chestController = chestSM.GetChestController();
+            chestController.GetChestView().Timer_Text.text = "LOCKED";
+        }
+
+        public override void OnChestButtonClicked()
+        {
+            base.OnChestButtonClicked();
+        }
     }
 
-    private void SetTimerText() {
-        ChestController chestController = chestSM.GetChestController();
-        chestController.GetChestView().Timer_Text.text = "LOCKED";
-    }
-
-    public override void OnChestButtonClicked()
-    {
-        base.OnChestButtonClicked();
-    }
 }

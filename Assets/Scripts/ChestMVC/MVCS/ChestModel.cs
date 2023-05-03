@@ -1,9 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Scriptables;
 
-namespace MVC.Chest {
+namespace Chest.MVC {
+
+    public enum ChestType {
+        COMMON,
+        MINI,
+        RARE,
+        LEGENDARY
+    }
+
     public class ChestModel
     {
         private ChestController chestController;
@@ -17,7 +23,6 @@ namespace MVC.Chest {
         public ChestType CHEST_TYPE {get; private set;}
 
         public void SetChestConfiguration(ChestScriptableObject chestScriptableObject) {
-            Debug.Log("CHEST SCRIPTABLE OBJECT : " + chestScriptableObject);
             UNLOCK_TIME = chestScriptableObject.MAX_UNLOCK_TIME;
             MAX_UNLOCK_TIME = chestScriptableObject.MAX_UNLOCK_TIME;
             GEMS_TO_UNLOCK = chestScriptableObject.MAX_GEMS_TO_UNLOCK;

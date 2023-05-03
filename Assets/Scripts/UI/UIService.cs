@@ -1,15 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Generics;
 using Scriptables;
-using Services.Chest;
-using Services.Events;
-using ChestSlot;
-using UnityEngine.UI;
 using TMPro;
 
-namespace Services.UI {
+namespace Services {
     public class UIService : GenericMonoSingleton<UIService>
     {
         public int COIN_COUNT {get; private set;}

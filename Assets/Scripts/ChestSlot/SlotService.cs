@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Generics;
+using ChestSlot;
 
-namespace ChestSlot {
+namespace Services {
     public class SlotService : GenericMonoSingleton<SlotService>
     {
         [SerializeField] ChestSlotController[] chestSlots;

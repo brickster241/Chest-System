@@ -1,25 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using MVC.Chest;
+using Chest.MVC;
 
-public class ChestQueuedState : ChestBaseState
-{
-    public ChestQueuedState(ChestSM _chestSM) : base(_chestSM) {}
-
-    public override void OnStateEnter()
+namespace Chest.StateMachine {
+    public class ChestQueuedState : ChestBaseState
     {
-        base.OnStateEnter();
-        SetTimerText();
-    }
+        public ChestQueuedState(ChestSM _chestSM) : base(_chestSM) {}
 
-    private void SetTimerText() {
-        ChestController chestController = chestSM.GetChestController();
-        chestController.GetChestView().Timer_Text.text = "QUEUED";
-    }
+        public override void OnStateEnter()
+        {
+            base.OnStateEnter();
+            SetTimerText();
+        }
 
-    public override void OnChestButtonClicked()
-    {
-        base.OnChestButtonClicked();
+        private void SetTimerText() {
+            ChestController chestController = chestSM.GetChestController();
+            chestController.GetChestView().Timer_Text.text = "QUEUED";
+        }
+
+        public override void OnChestButtonClicked()
+        {
+            base.OnChestButtonClicked();
+        }
     }
 }

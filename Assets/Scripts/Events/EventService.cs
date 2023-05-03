@@ -1,11 +1,10 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Generics;
-using Scriptables;
+using Chest.MVC;
+using Chest.StateMachine;
 
-namespace Services.Events {
+namespace Services {
     public class EventService : GenericMonoSingleton<EventService>
     {
         public event Action onSlotFull;

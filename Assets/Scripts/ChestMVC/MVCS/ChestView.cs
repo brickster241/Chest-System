@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-namespace MVC.Chest {
+namespace Chest.MVC {
     public class ChestView : MonoBehaviour
     {
         private ChestController chestController;

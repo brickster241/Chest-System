@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace MVC.Chest {
+namespace Chest.MVC {
     public class ChestPool {
         private ChestView[] chestPool;
 

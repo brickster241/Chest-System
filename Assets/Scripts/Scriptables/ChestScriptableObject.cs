@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Chest.MVC;
 
 namespace Scriptables {
     [CreateAssetMenu(fileName = "ChestScriptableObject", menuName = "Scriptable-Objects/ChestScriptableObject")]
@@ -11,12 +10,5 @@ namespace Scriptables {
         public int MAX_GEMS_TO_UNLOCK;
         public Sprite CHEST_SPRITE;
         public ChestType CHEST_TYPE;
-    }
-
-    public enum ChestType {
-        COMMON,
-        MINI,
-        RARE,
-        LEGENDARY
     }
 }
