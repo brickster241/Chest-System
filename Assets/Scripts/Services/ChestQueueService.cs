@@ -1,23 +1,23 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Generics;
 using Chest.MVC;
 using Chest.StateMachine;
 
 namespace Services {
 
     /*
-        ChestQueueService MonoSingleton Class. Handles All the Queue Operations.
+        ChestQueueService Class. Handles All the Queue Operations.
         Enqueues & Dequeues Chest to switch to UNLOCKING State.
     */
-    public class ChestQueueService : GenericMonoSingleton<ChestQueueService>
+    public class ChestQueueService
     {
-        [SerializeField] int MAX_QUEUE_COUNT;
+        private int MAX_QUEUE_COUNT;
         private ChestController currentChest = null;
         private Queue<ChestController> ChestsInUnlockingQueue;
 
-        private void Start() {
-            ChestsInUnlockingQueue = new Queue<ChestController>();  
+        public ChestQueueService(int _MAX_QUEUE_COUNT) {
+            MAX_QUEUE_COUNT = _MAX_QUEUE_COUNT;
+            ChestsInUnlockingQueue = new Queue<ChestController>();
         }
 
         /*

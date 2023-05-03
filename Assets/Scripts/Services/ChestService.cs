@@ -15,10 +15,13 @@ namespace Services {
         [SerializeField] ChestScriptableObjectList chestConfigs;
         [SerializeField] ChestView ChestPrefab;
         [SerializeField] Transform ChestsParentTF;
+        [SerializeField] int MAX_QUEUE_COUNT;
         private ChestPool chestPool;
+        private ChestQueueService chestQueueService;
 
         private void Start() {
             chestPool = new ChestPool(4, ChestPrefab, ChestsParentTF);
+            chestQueueService = new ChestQueueService(MAX_QUEUE_COUNT);
         }
 
         /*
@@ -82,7 +85,23 @@ namespace Services {
             Dequeues Chest From Waiting Queue : Which starts the Timer.
         */
         public void DequeueChestFromWaitingQueue() {
-            ChestQueueService.Instance.DequeueChest();
+            chestQueueService.DequeueChest();
         }
+
+        /*
+            Returns boolean specifying is it Possible to Add Chest to Waiting Queue.
+        */
+        public bool isChestQueueingPosssible() {
+            return chestQueueService.isChestQueueingPosssible();
+        }
+
+        /*
+            Adds Chest GameObject to Waiting Queue.
+            Also Starts Unlocking the First Chest if no chest is currently Unlocking.
+        */
+        public void AddInQueue(GameObject chestObject) {
+            chestQueueService.AddInQueue(chestObject);
+        }
+
     }
 }

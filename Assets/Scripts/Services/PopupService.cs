@@ -37,8 +37,8 @@ namespace Services {
         */
         public void OnQueueButtonClick(GameObject ChestGameObject) {
             ClearPopUp();
-            if (ChestQueueService.Instance.isChestQueueingPosssible()) {
-                ChestQueueService.Instance.AddInQueue(ChestGameObject);
+            if (ChestService.Instance.isChestQueueingPosssible()) {
+                ChestService.Instance.AddInQueue(ChestGameObject);
             } else {
                 PopupUI.SetActive(true);
                 detailText.text = "QUEUE IS FULL. TRY AGAIN LATER.";
