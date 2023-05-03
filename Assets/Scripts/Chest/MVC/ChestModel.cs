@@ -1,9 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Scriptables;
 
-namespace MVC.Chest {
+namespace Chest.MVC {
+
+    /*
+        Enum for Type of Chest.
+    */
+    public enum ChestType {
+        COMMON,
+        MINI,
+        RARE,
+        LEGENDARY
+    }
+
+    /*
+        ChestModel class. Contains Data for a chest. Interacts with the ChestController.
+    */
     public class ChestModel
     {
         private ChestController chestController;
@@ -16,8 +28,11 @@ namespace MVC.Chest {
         public Sprite CHEST_SPRITE {get; private set;}
         public ChestType CHEST_TYPE {get; private set;}
 
+        /*
+            Sets Chest Properties based on the values from ScriptableObject.
+            Gets Called Everytime a new chest is spawned.
+        */
         public void SetChestConfiguration(ChestScriptableObject chestScriptableObject) {
-            Debug.Log("CHEST SCRIPTABLE OBJECT : " + chestScriptableObject);
             UNLOCK_TIME = chestScriptableObject.MAX_UNLOCK_TIME;
             MAX_UNLOCK_TIME = chestScriptableObject.MAX_UNLOCK_TIME;
             GEMS_TO_UNLOCK = chestScriptableObject.MAX_GEMS_TO_UNLOCK;
@@ -28,14 +43,23 @@ namespace MVC.Chest {
             CHEST_GEMS = Random.Range(chestScriptableObject.CHEST_GEMS_RANGE.x, chestScriptableObject.CHEST_GEMS_RANGE.y);
         }
 
+        /*
+            Returns Reference to the ChestController connected with the Model.
+        */
         public ChestController GetChestController() {
             return chestController;
         }
 
+        /*
+            Sets Reference to the ChestController to connect it with the Model.
+        */
         public void SetChestController(ChestController _chestController) {
             chestController = _chestController;
         }
 
+        /*
+            Updates UNLOCK TIME & GEMS TO UNLOCK Parameters to simulate Countdown timer.
+        */
         public void UpdateUnlockTime(float deltaTime) {
             UNLOCK_TIME = Mathf.Max(UNLOCK_TIME - deltaTime, 0);
             GEMS_TO_UNLOCK = (int)Mathf.Ceil((UNLOCK_TIME / MAX_UNLOCK_TIME) * MAX_GEMS_TO_UNLOCK);
