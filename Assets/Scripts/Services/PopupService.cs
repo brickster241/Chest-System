@@ -6,6 +6,10 @@ using Chest.MVC;
 using Chest.StateMachine;
 
 namespace Services {
+
+    /*
+        PopupService MonoSingleton Class. Handles All the logic & functionality of PopupUI.
+    */
     public class PopupService : GenericMonoSingleton<PopupService>
     {
         [SerializeField] GameObject PopupUI;
@@ -18,6 +22,9 @@ namespace Services {
         [SerializeField] TextMeshProUGUI chestText;
         [SerializeField] TextMeshProUGUI chestTitleText;
 
+        /*
+            Subscribing to onSlotsFull, OnChestSpawned, onChestClicked, onNotEnoughCoins Event.
+        */
         private void OnEnable() {
             EventService.Instance.onSlotFull += OnSlotsFull;
             EventService.Instance.onChestSpawned += OnChestSpawnedSuccesful;
@@ -25,6 +32,9 @@ namespace Services {
             EventService.Instance.onNotEnoughCoins += DisplayNotEnoughResources;
         }
 
+        /*
+            onQueueButtonClick Method. Gets Executed when Queue Button is Clicked.
+        */
         public void OnQueueButtonClick(GameObject ChestGameObject) {
             ClearPopUp();
             if (ChestQueueService.Instance.isChestQueueingPosssible()) {
@@ -37,6 +47,9 @@ namespace Services {
             }
         }
 
+        /*
+            onUnlockButtonClick Method. Gets Executed when Unlock Button is Clicked.    
+        */
         public void OnUnlockButtonClick(GameObject ChestGameObject, int GEMS_TO_UNLOCK) {
             AudioService.Instance.PlayAudio(SoundType.BUTTON_CLICK);
             if (UIService.Instance.GEM_COUNT >= GEMS_TO_UNLOCK) {
@@ -49,6 +62,9 @@ namespace Services {
             }
         }
 
+        /*
+            Clears the PopupUI & Disables all Gameobjects.
+        */
         public void ClearPopUp() {
             AudioService.Instance.PlayAudio(SoundType.BUTTON_CLICK);
             PopupUI.SetActive(false);
@@ -62,6 +78,9 @@ namespace Services {
             chestText.gameObject.SetActive(false);
         }
 
+        /*
+            Displays Slots are Full Popup.
+        */
         public void OnSlotsFull() {
             PopupUI.SetActive(true);
             OkButton.gameObject.SetActive(true);
@@ -69,6 +88,9 @@ namespace Services {
             detailText.gameObject.SetActive(true);
         }
 
+        /*
+            Displays Not Enough Coins / Gems Popup.
+        */
         public void DisplayNotEnoughResources() {
             PopupUI.SetActive(true);
             OkButton.gameObject.SetActive(true);
@@ -76,6 +98,10 @@ namespace Services {
             detailText.gameObject.SetActive(true);
         }
 
+        /*
+            OnChestButtonClicked Method. Gets Executed whenever Chest is Clicked.
+            COINS, GEMS, GEMS_TO_UNLOCK, CHEST_STATE & ChestType along with GameObject are Added to Handle All States.
+        */
         public void OnChestButtonClicked(int COINS, int GEMS, int GEMS_TO_UNLOCK, ChestState CHEST_STATE, ChestType chestType, GameObject chestObject) {
             AudioService.Instance.PlayAudio(SoundType.BUTTON_CLICK);
             if (CHEST_STATE == ChestState.LOCKED) {
@@ -87,6 +113,10 @@ namespace Services {
             }
         }
 
+        /*
+            Displays Popup UI when Chest is Clicked in LOCKED State.
+            Enables Queue & Cancel Buttons.
+        */
         private void ChestLockedStatePopUp(GameObject chestObject) {
             PopupUI.SetActive(true);
             detailText.text = "CHEST IS LOCKED. QUEUE UNLOCKING ?";
@@ -96,6 +126,10 @@ namespace Services {
             CancelButton.gameObject.SetActive(true);
         }
 
+        /*
+            Displays Popup UI when Chest is Clicked in UNLOCKING State.
+            Enables Unlock Now & Cancel Buttons.
+        */
         private void ChestUnlockingStatePopUp(int GEMS_TO_UNLOCK, GameObject chestObject) {
             PopupUI.SetActive(true);
             detailText.text = "UNLOCK CHEST FOR " + GEMS_TO_UNLOCK + " GEMS ?";
@@ -106,6 +140,10 @@ namespace Services {
             CancelButton.gameObject.SetActive(true);
         }
 
+        /*
+            Displays Popup UI when Chest is Clicked in OPEN State.
+            Displays COINS, GEMS obtained.
+        */
         private void ChestOpenStatePopUp(int COINS, int GEMS, ChestType chestType) {
             chestTitleText.text = GetChestTypeText(chestType) + " CHEST OPENED !!";
             chestText.text = "COINS FOUND : " + COINS + "\nGEMS FOUND  :   " + GEMS;
@@ -116,6 +154,9 @@ namespace Services {
             EventService.Instance.InvokeCollectCoinGemEvent(COINS, GEMS);
         }
 
+        /*
+            Gets the ChestType Text by taking ChestType as Input.
+        */
         private string GetChestTypeText(ChestType chestType) {
             string ChestTypeText = "";
             if (chestType == ChestType.COMMON) {
@@ -130,6 +171,10 @@ namespace Services {
             return ChestTypeText;
         }
 
+        /*
+            Displays Popup when Chest is Spawned Successfully.
+            Displays Chest Type & Coin , gem Range.
+        */
         public void OnChestSpawnedSuccesful(Vector2Int COIN_RANGE, Vector2Int GEM_RANGE, ChestType chestType) {
             string ChestTypeText = GetChestTypeText(chestType);
             chestTitleText.text = ChestTypeText + " CHEST FOUND !!";
@@ -140,6 +185,9 @@ namespace Services {
             OkButton.gameObject.SetActive(true);
         }
 
+        /*
+            Unsubscribing to onSlotsFull, OnChestSpawned, onChestClicked, onNotEnoughCoins Event.
+        */
         private void OnDisable() {
             EventService.Instance.onSlotFull -= OnSlotsFull;
             EventService.Instance.onChestSpawned -= OnChestSpawnedSuccesful;

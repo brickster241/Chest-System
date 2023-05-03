@@ -1,9 +1,18 @@
 using UnityEngine;
 
 namespace Chest.MVC {
+
+    /*
+        ObjectPool Class for Chest. Handles Pool Generation, Get and Return Item Functionality. 
+    */
     public class ChestPool {
         private ChestView[] chestPool;
 
+        /*
+            Constructor to Generate Pool of Chest Gameobjects. 
+            Takes poolCount, Prefab and Parent Transform as parameters.
+            Also Sets Connections between ChestModel, ChestView & ChestController.
+        */
         public ChestPool(int poolCount, ChestView chestPrefab, Transform parentTF) {
             chestPool = new ChestView[poolCount];
             for (int i = 0; i < poolCount; i++) {
@@ -17,6 +26,10 @@ namespace Chest.MVC {
             }
         }
 
+        /*
+            Fetches the ChestItem if it isn't active. If no objects are available, returns Null.
+            Returning NULL acts as Slots Full Mechanism.
+        */
         public ChestView GetChestItem() {
             for (int i = 0; i < chestPool.Length; i++) {
                 if (!chestPool[i].gameObject.activeInHierarchy)
@@ -25,6 +38,9 @@ namespace Chest.MVC {
             return null;
         }
 
+        /*
+            Returns the ChestView reference back to Pool. Deactivates the GameObject.
+        */
         public void ReturnChestItem(ChestView chestView) {
             chestView.gameObject.SetActive(false);
         }

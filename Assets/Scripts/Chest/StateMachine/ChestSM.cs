@@ -1,7 +1,9 @@
 using Chest.MVC;
 
 namespace Chest.StateMachine {
-
+    /*
+        Enum for Chest State.
+    */
     public enum ChestState {
         LOCKED,
         QUEUED,
@@ -9,6 +11,9 @@ namespace Chest.StateMachine {
         OPEN
     }
 
+    /*
+        ChestSM class. Acts as a State Machine for Chest. Contains Reference to all different States & ChestController.
+    */
     public class ChestSM
     {
         public ChestBaseState currentChestState = null;
@@ -19,6 +24,9 @@ namespace Chest.StateMachine {
         private ChestOpenState openState;
         private ChestController chestController;
 
+        /*
+            Constructor to Initialize all ChestStates & set reference to ChestController.
+        */
         public ChestSM(ChestController _chestController) {
             chestController = _chestController;
             lockedState = new ChestLockedState(this);
@@ -28,14 +36,24 @@ namespace Chest.StateMachine {
             ResetSM();
         }
 
+        /*
+            Resets the State to LOCKED. Gets called everytime when Chest is Spawned.
+        */
         public void ResetSM() {
             SwitchState(ChestState.LOCKED);
         }
 
+        /*
+            Returns Reference to the ChestController connected with the StateMachine.
+        */
         public ChestController GetChestController() {
             return chestController;
         }
 
+        /*
+            Switches the currentState of Chest.
+            Also checks if we are trying to switch again into the currentState.
+        */
         public void SwitchState(ChestState chestState) {
             ChestBaseState newState = GetChestBaseStateFromEnum(chestState);
             if (currentChestState == newState) {
@@ -48,6 +66,9 @@ namespace Chest.StateMachine {
             currentChestState.OnStateEnter();
         }
 
+        /*
+            Returns reference to the ChestBaseState object with respect to the Enum Value.
+        */
         public ChestBaseState GetChestBaseStateFromEnum(ChestState chestState) {
             if (chestState == ChestState.LOCKED) {
                 return lockedState;

@@ -6,6 +6,10 @@ using Chest.StateMachine;
 
 namespace Services {
 
+    /*
+        ChestService MonoSingleton Class. Handles Creation of Chest GameObjects.
+        Communicates with Other Services.
+    */
     public class ChestService : GenericMonoSingleton<ChestService>
     {
         [SerializeField] ChestScriptableObjectList chestConfigs;
@@ -17,6 +21,10 @@ namespace Services {
             chestPool = new ChestPool(4, ChestPrefab, ChestsParentTF);
         }
 
+        /*
+            Fetches Chest Configuration & GameObject associated from the ChestPool.
+            Also Sets View Attributes, Model Configuration & Resets State Machine.
+        */
         public (GameObject, ChestScriptableObject) FetchChestFromPool() {
             ChestView chestObject = chestPool.GetChestItem();
             if (chestObject != null) {
@@ -29,15 +37,24 @@ namespace Services {
             return (null, null);
         }
 
+        /*
+            Returns ChestScriptableObject from ChestScriptableObjectList which contains different ChestModel Configurations.
+        */
         public ChestScriptableObject FetchRandomChestConfiguration() {
             int index = Random.Range(0, chestConfigs.chestScriptableObjects.Length);
             return chestConfigs.chestScriptableObjects[index];
         }
 
+        /*
+            Returns Chest GameObject to Pool. Disables the Chest GameObject.
+        */
         public void ReturnChestToPool(ChestView chestView) {
             chestPool.ReturnChestItem(chestView);
         }
 
+        /*
+            Triggers PopUp & Uses Different Services to Handle Audio, Events, ChestSlots.
+        */
         public void TriggerPopUp(ChestController chestController) {
             ChestSM chestSM = chestController.GetChestSM();
             int COINS = chestController.GetChestModel().CHEST_COINS;
@@ -53,11 +70,17 @@ namespace Services {
             EventService.Instance.InvokeChestClickedEvent(COINS, GEMS, GEMS_TO_UNLOCK, CHEST_STATE, chestType, chestController.GetChestView().gameObject);
         }
 
+        /*
+            Unlocks Chest Instantly. Sets the UNLOCK TIME to 0. Executed when UNLOCK NOW button is Clicked.
+        */
         public void UnlockChest(GameObject ChestGameObject) {
             ChestController chestController = ChestGameObject.GetComponent<ChestView>().GetChestController();
             chestController.GetChestModel().UpdateUnlockTime(chestController.GetChestModel().UNLOCK_TIME);
         }
 
+        /*
+            Dequeues Chest From Waiting Queue : Which starts the Timer.
+        */
         public void DequeueChestFromWaitingQueue() {
             ChestQueueService.Instance.DequeueChest();
         }

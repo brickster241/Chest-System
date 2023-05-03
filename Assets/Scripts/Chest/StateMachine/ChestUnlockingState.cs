@@ -3,17 +3,29 @@ using UnityEngine;
 using Chest.MVC;
 
 namespace Chest.StateMachine {
+
+    /*
+        ChestUnlockingState class. Handles Functionality of when Chest is in UNLOCKING state.
+        Chest switches to this state from QUEUED state, when the gameObject associated is DEQUEUED.
+    */
     public class ChestUnlockingState : ChestBaseState
     {
         public ChestUnlockingState(ChestSM _chestSM) : base(_chestSM) {}
 
+        /*
+            Method gets called when Chest enters QUEUED state.
+        */
         public override void OnStateEnter()
         {
             base.OnStateEnter();
             chestSM.GetChestController().GetChestView().StartCoroutine(StartTimer());
         }
 
-
+        /*
+            StartTimer Method. Gets Called in OnStateEnter function.
+            Decrease value of UNLOCK_TIME & updates text in MM::SS format.
+            Switches State to Open After Timer goes to 0.
+        */
         private IEnumerator StartTimer() {
             ChestModel chestModel = chestSM.GetChestController().GetChestModel();
             ChestView chestView = chestSM.GetChestController().GetChestView();
@@ -26,6 +38,9 @@ namespace Chest.StateMachine {
             chestSM.GetChestController().DequeueChest();
         }
 
+        /*
+            Gets Time in MM::SS Format based on UNLOCK TIME.
+        */
         private string GetTimeText(float UNLOCK_TIME) {
             int minutes = (int)UNLOCK_TIME / 60;
             int seconds = (int)UNLOCK_TIME % 60;
@@ -41,16 +56,6 @@ namespace Chest.StateMachine {
                 finalText += seconds;
             }
             return finalText;
-        }
-
-        public override void OnStateUpdate()
-        {
-            base.OnStateUpdate();
-        }
-
-        public override void OnStateExit()
-        {
-            base.OnStateExit();
         }
     }
 

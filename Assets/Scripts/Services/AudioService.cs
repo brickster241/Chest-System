@@ -6,11 +6,17 @@ using Generics;
 
 namespace Services {
 
+    /*
+        Enum for Sound Types.
+    */
     public enum SoundType {
         BUTTON_CLICK,
         CHEST_OPENED
     }
 
+    /*
+        Serializable Class SoundInfo to maintain different properties.
+    */
     [System.Serializable]
     public class SoundInfo {
 
@@ -26,6 +32,9 @@ namespace Services {
         
     }
 
+    /*
+        AudioService MonoSingleton class. Handles all the Audio in the Project.
+    */
     public class AudioService : GenericMonoSingleton<AudioService>
     {
         public SoundInfo[] Sounds;
@@ -40,11 +49,17 @@ namespace Services {
             }
         }
 
+        /*
+            Plays the Audio of specified SoundType.
+        */
         public void PlayAudio(SoundType soundType) {
             SoundInfo soundInfo = Array.Find(Sounds, item => item.soundType == soundType);
             soundInfo.audioSource.Play();
         }
 
+        /*
+            Stops the Audio of specified SoundType.
+        */
         public void StopAudio(SoundType soundType) {
             SoundInfo soundInfo = Array.Find(Sounds, item => item.soundType == soundType);
             soundInfo.audioSource.Stop();
